@@ -1,4 +1,3 @@
-
 //  _    _          _   _            __          __               _       _ 
 // | |  | |        | | | |           \ \        / /              | |     | |
 // | |__| |   ___  | | | |   ___      \ \  /\  / /  ___    _ __  | |   __| |
@@ -10,16 +9,32 @@
 // @by Kaelyx
 // @license CC BY-NC-SA
 
+/**
+* Hello World is a piece written based on the first two concepts a lot of developers do after outputting
+* "Hello World" into stdout.
+* We iterate over the idecies of PI to generate a core melody
+* And we calculate the fibbonacci sequence and output it as a multiplier of a sawtooth base frequency to
+* Give some depth and background sound.
+* There are two fibonnaci patterns, the visual one with the scope displays a sine wave with the period
+* peaks equaling the current Nth term of the fibbonacci sequence!.
+**/
+
+
 setCps(140/60/4)
-
+// Register different functions
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
-
 register('acid', (val, pattern) => pattern.lpf(50).lpenv(val * 10).lps(.15).lpd(.15))
 register(['vol', 'volume'], (val, pattern) => pattern.postgain(clamp(val, 0 , 1)))
 register(['smooth'], (val, pattern) => pattern.attack(val).release(val).slide(0.1))
 
-$:s("sbd!3 <sbd [sbd tr909_hh]>").room(.5).volume(slider(0.874,0,1))
+$:s("sbd!3 <sbd [sbd <tr909_hh [tr909_hh tr909_hh]>]>").room(.2).volume(slider(0.386,0,1))
   ._scope()
+
+$: s("tr909_hh")
+  .seg(4)
+  .volume(slider(0.215,0,1))
+  ._scope()
+
 const fibBase = 110
 const fibSeqFreqMult = 10
 const fibSeqVisualMult = 13
@@ -36,7 +51,7 @@ $: stepcat(seq(fibSeqFreq))
   .seg(8)
   .slow(1)
   .acid(slider(1,0,1))
-  .volume(slider(0.227,0,1))
+  .volume(slider(0.121,0,1))
 ._scope()
 
 $: stepcat(seq(fibSeqVisual))
@@ -50,13 +65,27 @@ $: stepcat(seq(fibSeqVisual))
 const PiArr = (Math.PI+'').replace('.','').slice(0,8).split('')
 
 $: stepcat(seq(PiArr))
-  .add(cat("<[9,4] [7,3] <[5,1] [6,2]> <[7,3] [9,4]>>")).add(cat("<0 _ 1>"))
+  .add(cat("<[9,4] [7,3] <[5,1] [6,2]> <[7,3] [9,4]>>")).add(cat("<0 1 2>")).add("<0!4 -2!4 2!4>")
   .s("square")
   .scale("d:major")
   .fast(2)
   .seg(8)
-  .acid(slider(0.723,0 , 1))
-  .echo(3, 1, .5)
+  .acid(slider(0.683,0,1))
+  .volume(slider(0.593,0,1))
+  .echo(2, 1, .5)
+  .fast(2)
+  .room(.1)
+  ._pianoroll()
+
+$: stepcat(seq(PiArr))
+  .add(cat("<[9,4] [7,3] <[5,1] [6,2]> <[7,3] [9,4]>>")).add(cat("<0 1 2>")).add(cat("<0 1 2>"))
+  .s("square")
+  .scale("d:major")
+  .fast(2)
+  .seg(8)
+  .acid(slider(0.721,0 , 1))
+  .volume(slider(0.8,0,1))
+  .echo(2, 1, .5)
+  .fast(1)
   .room(.5)
   ._pianoroll()
-  
