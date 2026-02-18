@@ -16,39 +16,35 @@ register(['smooth'], (val, pattern) => pattern.attack(val).release(val).slide(0.
 
 setCps(145/60/4)
 
-$: s("korgkrz_hh!8").smooth(.5).vol(slider(0.25,0,1))
+$: s("korgkrz_hh!8").smooth(.5).vol(slider(1,0,1))
 $: s("[sbd!3 <sbd*2 sbd*4>]")
-  .smooth(.05)
-  .vol(slider(0.244,0,1))
+  .vol(slider(0.413,0,1))
 
 $: n("<[0, -2] [4, 2] [0, -2] [9, 7] [7,5]>*8".add("<4 _ _ 5 _ 7 _ _ 6>*2".add("< 0 _ 4 _ 2 _ -1 _ >/.5")))
   .s("sawtooth")
   .scale("g:minor")
   .trans(-12)
-  .delay(.2)
-  .echo(1, .8, .2)
-  .acid(slider(0.473,0,1))
-  .vol(slider(0.81,0,1))
-
-._pianoroll()
-
-
-$: s("sh09_bd!4")
-  .fit()
-  .duck("3:4:5:6")
-  .duckdepth(.8)
-  .duckattack(.16)
-  .vol(slider(0.375,0,1))
-
-$: n("<5 <3 2> <4 6> _ <7 5> _ <4 6>>*2").scale("g:minor")
-  .trans(-24)
-  .detune(rand)
-  .s("supersaw")
-  .acid(slider(0.341,0,1))
-  .smooth(slider(0,0,1))
+  .delay(.1)
+  .echo(3, .5, .5)
+  .acid(slider(0.511,0,1))
   .vol(slider(0.545,0,1))
 
 ._pianoroll()
+
+
+$: s("sh09_bd!4").fit().duck("3:4:5:6").duckdepth(.8).duckattack(.16).vol(slider(0.375,0,1))
+$: n("<5 <6 4> <5 3> <6 4> <4 2>>*2").scale("g:minor")
+  .trans(-24)
+  .seg(4)
+  .acid(slider(0.379,0,1))
+  .detune(rand)
+  .s("supersaw")
+  .smooth(slider(0.101,0,1))
+  .vol(slider(0.281,0,1))
+
+._pianoroll()
+._scope()
+
 all(x =>
   x._scope()
 )
