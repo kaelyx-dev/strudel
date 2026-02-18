@@ -1,0 +1,53 @@
+//                            _                                          _ 
+//  _ __    ___    __ _    __| |  _ __ ___     ___       _ __ ___     __| |
+// | '__|  / _ \  / _` |  / _` | | '_ ` _ \   / _ \     | '_ ` _ \   / _` |
+// | |    |  __/ | (_| | | (_| | | | | | | | |  __/  _  | | | | | | | (_| |
+// |_|     \___|  \__,_|  \__,_| |_| |_| |_|  \___| (_) |_| |_| |_|  \__,_|                                                                    
+//
+// @title readme.md
+// @by Kaelyx
+// @license CC BY-NC-SA
+
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
+register('acid', (val, pattern) => pattern.lpf(50).lpenv(val * 10).lps(.15).lpd(.15))
+register(['vol', 'volume'], (val, pattern) => pattern.postgain(clamp(val, 0 , 1)))
+register(['smooth'], (val, pattern) => pattern.attack(val).release(val).slide(0.1))
+
+setCps(145/60/4)
+
+$: s("korgkrz_hh!8").smooth(.5).vol(slider(0.288,0,1))
+$: s("[sbd!3 <sbd*2 sbd*4>]")
+  .smooth(.05)
+  .vol(slider(0.168,0,1))
+
+$: n("<[0, -2] [4, 2] [0, -2] [9, 7] [7,5]>*8".add("<4 _ _ 5 _ 7 _ _ 6>*2".add("< 0 _ 4 _ 2 _ -1 _ >/.5")))
+  .s("sawtooth")
+  .scale("g:minor")
+  .trans(-12)
+  .delay(.2)
+  .echo(1, .8, .2)
+  .acid(slider(0.473,0,1))
+  .vol(slider(0.81,0,1))
+
+._pianoroll()
+
+
+$: s("sh09_bd!4")
+  .fit()
+  .duck("3:4:5:6")
+  .duckdepth(.8)
+  .duckattack(.16)
+  .vol(slider(0.375,0,1))
+
+$: n("<5 <3 2> <4 6> _ <7 5> _ <4 6>>*2").scale("g:minor")
+  .trans(-24)
+  .detune(rand)
+  .s("supersaw")
+  .acid(slider(0.68,0,1))
+  .smooth(slider(0,0,1))
+  .vol(slider(0.753,0,1))
+
+._pianoroll()
+all(x =>
+  x._scope()
+)
