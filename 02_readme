@@ -13,12 +13,13 @@ register('acid', (val, pattern) => pattern.lpf(50).lpenv(val * 10).lps(.15).lpd(
 register(['vol', 'volume'], (val, pattern) => pattern.postgain(clamp(val, 0 , 1)))
 register(['smooth'], (val, pattern) => pattern.attack(val).release(val).slide(0.1))
 
+
 setCps(145/60/4)
 
-$: s("korgkrz_hh!8").smooth(.5).vol(slider(0.288,0,1))
+$: s("korgkrz_hh!8").smooth(.5).vol(slider(0.25,0,1))
 $: s("[sbd!3 <sbd*2 sbd*4>]")
   .smooth(.05)
-  .vol(slider(0.168,0,1))
+  .vol(slider(0.244,0,1))
 
 $: n("<[0, -2] [4, 2] [0, -2] [9, 7] [7,5]>*8".add("<4 _ _ 5 _ 7 _ _ 6>*2".add("< 0 _ 4 _ 2 _ -1 _ >/.5")))
   .s("sawtooth")
@@ -43,9 +44,9 @@ $: n("<5 <3 2> <4 6> _ <7 5> _ <4 6>>*2").scale("g:minor")
   .trans(-24)
   .detune(rand)
   .s("supersaw")
-  .acid(slider(0.68,0,1))
+  .acid(slider(0.341,0,1))
   .smooth(slider(0,0,1))
-  .vol(slider(0.753,0,1))
+  .vol(slider(0.545,0,1))
 
 ._pianoroll()
 all(x =>
